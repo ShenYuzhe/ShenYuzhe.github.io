@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Results</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/simple-sidebar.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#">
+                        SIFT Acceleration
+                    </a>
+                </li>
+                <li>
+                    <a href="abstract.html">Abstract</a>
+                </li>
+                <li>
+                    <a href="overview.html">Overview</a>
+                </li>
+                <li>
+                    <a href="detailed.html">Detailed Description</a>
+                </li>
+                <li>
+                    <a href="demonstration.html">Demonstration</a>
+                </li>
+                <li>
+                    <a href="results.html">Results</a>
+                </li>
+                <li>
+                    <a href="future.html">Future Work</a>
+                </li>
+                <li>
+                    <a href="reference.html">References</a>
+                </li>
+                <li>
+                    <a href="appendix.html">Appendix</a>
+                </li>
+                <li>
+                    <a href="github.html">Github</a>
+                </li>
+                <li>
+                    <a href="contact.html">Contact</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2>Extracting Extrema</h2>
+                        <h3>Python Running Time</h3>
+                        <img src="../images/python_extrema.png" alt="python extrema" style="width:460px;height:100px;"><br>
+                        <h3>CL Running Time</h3>
+                        <img src="../images/cl_extrema.png" alt="cl extrema" style="width:460px;height:100px;">
+                        <h2>Extracting Keypoints</h2>
+                        <h3>Python Running Time</h3>
+                        <img src="../images/python_keypoint.png" alt="python extrema" style="width:520px;height:100px;">
+                        <h3>CL Running Time</h3>
+                        <img src="../images/cl_keypoint.png" alt="cl extrema" style="width:520px;height:100px;">
+                        <h3>Strategy Benchmark</h3>
+                        <h3>Extracting Maxima and Minima: Naive VS. 1D Tile VS. 2D Tile</h3>
+                        <img src="../images/scaling_extract_max_min.png" alt="cl extrema" style="width:520px;height:380px;">
+                        <h3>Extracting Keypoints: Naive VS. 1D Tile VS. 2D Tile</h3>
+                        <img src="../images/scaling_keypoints.png" alt="cl extrema" style="width:520px;height:380px;">
+                        <image>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="../js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#show-match").click(function(e) {
+        e.preventDefault();
+        $("#result").attr("style","visibility: show");
+    });
+    </script>
+
+</body>
+
+</html>

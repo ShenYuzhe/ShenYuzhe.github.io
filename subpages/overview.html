@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Abstraction</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/simple-sidebar.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#">
+                        SIFT Acceleration
+                    </a>
+                </li>
+                <li>
+                    <a href="abstract.html">Abstract</a>
+                </li>
+                <li>
+                    <a href="overview.html">Overview</a>
+                </li>
+                <li>
+                    <a href="detailed.html">Detailed Description</a>
+                </li>
+                <li>
+                    <a href="demonstration.html">Demonstration</a>
+                </li>
+                <li>
+                    <a href="results.html">Results</a>
+                </li>
+                <li>
+                    <a href="future.html">Future Work</a>
+                </li>
+                <li>
+                    <a href="reference.html">References</a>
+                </li>
+                <li>
+                    <a href="appendix.html">Appendix</a>
+                </li>
+                <li>
+                    <a href="github.html">Github</a>
+                </li>
+                <li>
+                    <a href="contact.html">Contact</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2>Construct Scale Space</h2>
+                        <br>
+                        <h3>1. Gaussian Blur</h3>
+                        <p>
+                            <font size="4" face="Times">
+                            Gaussian Blur is an image filter. It uses normal distribution as calculation template and convolute it to original image to accomplish the purpose of blurring images.
+                            The 2D Gaussian Function is as following:
+                            </font>
+                        </p>
+                        <img src="../images/gaussian_2d.png" alt="2d gaussian function" style="width:304px;height:72px;">
+                        <p>The convolution function is as following:</p>
+                        <img src="../images/convolute.png" alt="convolute function" style="width:304px;height:42px;">
+                        <p>
+                        σ is standard deviation for normal distribution. The larger the σ the more dim is the image. r is the blur radius specifying the distance between element and the template center. (m, n) specifies the dimension of the template.
+                        </p>
+                        <img src="../images/aloha.png" alt="aloha" style="width:600px;height:290px;">
+                        </br>
+                        </br>
+                        <h3>2. Image pyramid</h1>
+                        <p>
+                            <font size="4" face="Times">
+                            For an image I, construct images in different scales which are called octave. This step is for the purpos of scale-invariant. In each of the scales there exists corresponding key points. The first scale is the double size of the original image, the second is the image of original size, and the following layers are scaling down gradually.
+                            </font>
+                        </p>
+                        <img src="../images/dog.png" alt="Difference of Gaussian" style="width:500px;height:420px;">
+                        <br>
+                        <br>
+                        <br>
+                        <h2>SIFT Stages</h1>
+                        <br>
+                        <h3>1. Scale-Space Extrema Detection</h3>
+                        <p>
+                            <font size="4" face="Times">
+                            Key points composes of local extrema (maxima or minima) from DOG (difference of  Gaussian). In order to extract the extrema, every pixel is compared to all its neighbors to see whether it is the largest or smallest among all its neighbors. It is compared to the points within its own scale, 9 points from its upper scale and 9 points from its lower scale. This is to ensure the extrema are detected in all scales.
+                            </font>
+                        </p>
+                        </br>
+                        <h3>2. Keypoint Localization</h3>
+                        <p>
+                            <font size="4" face="Times">
+                            Utilizing linear fitting to determine the location of key points. At meantime, points with low contrast will be eliminated. 
+                            We will fit the DOG (Difference of Gaussian) function using its Taylor Expansion.
+                            </font>
+                        </p>
+                        <img src="../images/taylor.png" alt="taylor expansion" style="width:304px;height:56px;">
+                        <p>
+                            <font size="4" face="Times">
+                            D(x, y, sigma) is the candidate key point in this case. Sigma specifies the Gaussian layer of this key point.
+                            Our goal is to get x_hat(x, y, sigma) that specifies the actual key point position. 
+                            </font>
+                        </p>
+                        </br>
+                        <h3>3. Orientation Assignment</h3>
+                        <p>
+                            <font size="4" face="Times">
+                            In order to give the descriptor the feature of rotation invariance, it is necessary to assign an orientation for each key point. Image gradient is utilized to get stable orientations within local scale. For each the key point extracted from DOG pyramid, we collect the orientation distribution feature from its neighbor scales. We utilize following formula:
+                            </font>
+                        </p>
+                        <img src="../images/orientation.png" alt="orientation" style="width:504px;height:83px;">
+                        <p>
+                            <font size="4" face="Times">
+                            Given the calculation result of key points. We use histogram to calculate statistics of the gradient and orientation in neighbor scales. Histogram will have 36 bins (divide 360 degrees into 36 directions each direction represents for 10 degree.
+                            </font>
+                        </p>
+                        <img src="../images/histogram.png" alt="histogram" style="width:660px;height:300px;">
+                        </br>
+                        <h3>4.  Picture Matching</h3>
+                        <p>
+                            <font size="4" face="Times">
+                            Given location of each key point, scale each key point lies in and direction for each key point. We then can use Euclidean Distance to match for each key point within two pictures.
+                            </font>
+                        </p>
+                        <img src="../images/coolmatch.png" alt="cool match" style="width:660px;height:300px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="../js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+</body>
+
+</html>

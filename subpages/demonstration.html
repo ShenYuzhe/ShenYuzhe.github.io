@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Demonstration</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/simple-sidebar.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#">
+                        SIFT Acceleration
+                    </a>
+                </li>
+                <li>
+                    <a href="abstract.html">Abstract</a>
+                </li>
+                <li>
+                    <a href="overview.html">Overview</a>
+                </li>
+                <li>
+                    <a href="detailed.html">Detailed Description</a>
+                </li>
+                <li>
+                    <a href="demonstration.html">Demonstration</a>
+                </li>
+                <li>
+                    <a href="results.html">Results</a>
+                </li>
+                <li>
+                    <a href="future.html">Future Work</a>
+                </li>
+                <li>
+                    <a href="reference.html">References</a>
+                </li>
+                <li>
+                    <a href="appendix.html">Appendix</a>
+                </li>
+                <li>
+                    <a href="github.html">Github</a>
+                </li>
+                <li>
+                    <a href="contact.html">Contact</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2>Original Pictures</h2>
+                        <img src="../images/motor_b.jpeg" alt="taylor expansion" style="width:304px;height:200px;">
+                        <img src="../images/motor_a.jpeg" alt="taylor expansion" style="width:304px;height:200px;">
+                        <a href="#show-match" class="btn btn-default" id="show-match">Show Matching Result</a>
+                    </div>
+                    <div class="col-lg-12" id="result" style="visibility: hidden">
+                        <h2>Matching Result</h2>
+                        <img src="../images/matches.jpg" alt="taylor expansion" style="width:608px;height:200px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="../js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#show-match").click(function(e) {
+        e.preventDefault();
+        $("#result").attr("style","visibility: show");
+    });
+    </script>
+
+</body>
+
+</html>

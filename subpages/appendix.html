@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>References</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/simple-sidebar.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#">
+                        SIFT Acceleration
+                    </a>
+                </li>
+                <li>
+                    <a href="abstract.html">Abstract</a>
+                </li>
+                <li>
+                    <a href="overview.html">Overview</a>
+                </li>
+                <li>
+                    <a href="detailed.html">Detailed Description</a>
+                </li>
+                <li>
+                    <a href="demonstration.html">Demonstration</a>
+                </li>
+                <li>
+                    <a href="results.html">Results</a>
+                </li>
+                <li>
+                    <a href="future.html">Future Work</a>
+                </li>
+                <li>
+                    <a href="reference.html">References</a>
+                </li>
+                <li>
+                    <a href="appendix.html">Appendix</a>
+                </li>
+                <li>
+                    <a href="github.html">Github</a>
+                </li>
+                <li>
+                    <a href="contact.html">Contact</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3>pyopencl utils code</h3>
+                        <pre>
+import pyopencl as cl
+import pyopencl.array
+import numpy as np
+import matplotlib as mpl
+mpl.use('agg')
+import matplotlib.pyplot as plt
+
+# Select the desired OpenCL platform; you shouldn't need to change this:
+NAME = 'NVIDIA CUDA'
+platforms = cl.get_platforms()
+devs = None
+for platform in platforms:
+    if platform.name == NAME:
+        devs = platform.get_devices()
+
+# Set up a command queue:
+ctx = cl.Context(devs)
+queue = cl.CommandQueue(ctx)
+
+"""extract max and min kernel"""
+extract_max_kernel = open('./cl/pyrlv.c').read()
+func_extract_max = cl.Program(ctx, extract_max_kernel).build().extract_max
+func_extract_max.set_scalar_arg_dtypes([None, None,\
+    np.float32, np.uint32, np.uint32, np.uint32, np.uint32, np.uint32])
+
+def createExtraBuffer(extrpyrlvl, diffpyrlvl):
+    extr_gpu = cl.array.to_device(queue, extrpyrlvl)
+    diff_gpu = cl.array.to_device(queue, diffpyrlvl)
+    return extr_gpu, diff_gpu
+
+#diffpyrlvl.shape[0] diffpyrlvl.shape[1] diffpyrlvl.shape[2]
+def extractMin(extr_gpu, diff_gpu, threshold, offset, m, n, l, i):
+    func_extract_max(queue, (m - offset * 2, n - offset * 2), None,\
+        extr_gpu.data, diff_gpu.data, np.float32(threshold), np.uint32(offset),\
+        np.uint32(m), np.uint32(n), np.uint32(l), np.uint32(i))
+
+"""calculate keypoints kernel"""
+get_keypoints_kernel = open('./cl/keypoint_orientation.c').read()
+func_get_keypoints = cl.Program(ctx, get_keypoints_kernel).build().get_keypoints
+func_get_keypoints.set_scalar_arg_dtypes([None, None,\
+    None, None,\
+    None, None, None,\
+    np.uint32, np.uint32,\
+    np.float32,\
+    np.uint32, np.uint32, np.uint32,\
+    np.uint32])
+
+def createKeypointsConstBuffer(keypoints, keyLen,
+    count, kvectotal):
+    keypoints_gpu = cl.array.to_device(queue, keypoints)
+    keyLen_gpu = cl.array.to_device(queue, keyLen)
+    count_gpu = cl.array.to_device(queue, count)
+    kvectotal_gpu = cl.array.to_device(queue, kvectotal)
+    return keypoints_gpu, keyLen_gpu, count_gpu, kvectotal_gpu
+
+def createKeypointsLevelBuffer(magpyrlvl, oripyrlvl):
+    magpyrlvl_gpu = cl.array.to_device(queue, magpyrlvl)
+    oripyrlvl_gpu = cl.array.to_device(queue, oripyrlvl)
+    return magpyrlvl_gpu, oripyrlvl_gpu
+
+def getKeypoints(keypoints_gpu, keyLen_gpu,\
+    count_gpu, kvectotal_gpu,\
+    extrpyrlvl_gpu, magpyrlvl_gpu, oripyrlvl_gpu,\
+    exOffset, kvOffset,\
+    multiply,\
+    m, n, l, i):
+    func_get_keypoints(queue, (m - exOffset * 2, n - exOffset * 2), None,\
+        keypoints_gpu.data, keyLen_gpu.data,\
+        count_gpu.data, kvectotal_gpu.data,\
+        extrpyrlvl_gpu.data, magpyrlvl_gpu.data, oripyrlvl_gpu.data,\
+        np.uint32(exOffset), np.uint32(kvOffset),\
+        np.float32(multiply),\
+        np.uint32(m), np.uint32(n), np.uint32(l), np.uint32(i))
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="../js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#show-match").click(function(e) {
+        e.preventDefault();
+        $("#result").attr("style","visibility: show");
+    });
+    </script>
+
+</body>
+
+</html>
